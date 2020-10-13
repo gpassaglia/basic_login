@@ -4,12 +4,15 @@ from flask import Flask, render_template, redirect, url_for, request
 # create the application object
 application = Flask(__name__)
 
+
 # use decorators to link the function to a url
 def home():
     return "Hello, World!"  # return a string
 
+
 def welcome():
     return render_template('welcome.html')  # render a template
+
 
 # route for handling the login page logic
 def login():
@@ -21,6 +24,7 @@ def login():
         else:
             return redirect(url_for('welcome'))
     return render_template('login.html')
+
 
 methods = ['POST', 'GET']
 

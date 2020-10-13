@@ -1,2 +1,5 @@
-Flask
+Flask~=1.1.2
 
+
+matplotlib~=3.3.2
+pandas~=1.1.3
