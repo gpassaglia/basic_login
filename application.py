@@ -1,24 +1,17 @@
-# import the Flask class from the flask module
-
+# print a nice greeting.
 from flask import Flask, render_template, redirect, url_for, request
 
 # create the application object
-app = Flask(__name__)
-
+application = Flask(__name__)
 
 # use decorators to link the function to a url
-@app.route('/')
 def home():
     return "Hello, World!"  # return a string
 
-
-@app.route('/welcome')
 def welcome():
     return render_template('welcome.html')  # render a template
 
-
 # route for handling the login page logic
-@app.route('/login', methods=['GET', 'POST'])
 def login():
     global error
     pass
@@ -29,7 +22,15 @@ def login():
             return redirect(url_for('welcome'))
     return render_template('login.html')
 
+methods = ['POST', 'GET']
 
-# start the server with the 'run()' method
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80)
+application.add_url_rule('/', 'home', home)
+application.add_url_rule('/welcome', 'welcome', welcome)
+application.add_url_rule('/login', 'login', login, methods=methods)
+
+# run the app.
+if __name__ == "__main__":
+    # Setting debug to True enables debug output. This line should be
+    # removed before deploying a production app.
+    application.debug = True
+    application.run()
