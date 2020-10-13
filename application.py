@@ -32,4 +32,4 @@ def login():
 
 # start the server with the 'run()' method
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80)
+    app.run(deug=True, port=8000)
