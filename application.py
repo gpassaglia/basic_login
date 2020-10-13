@@ -2,6 +2,8 @@
 from flask import Flask, render_template, redirect, url_for, request
 
 # create the application object
+from chart import chart
+
 application = Flask(__name__)
 
 
@@ -31,6 +33,7 @@ methods = ['POST', 'GET']
 application.add_url_rule('/', 'home', home)
 application.add_url_rule('/welcome', 'welcome', welcome)
 application.add_url_rule('/login', 'login', login, methods=methods)
+application.add_url_rule('/chart', 'chart', chart)
 
 # run the app.
 if __name__ == "__main__":
