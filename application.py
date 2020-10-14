@@ -32,6 +32,7 @@ def login():
 methods = ['POST', 'GET']
 
 application.add_url_rule('/', 'home', home)
+application.add_url_rule('/data', 'data', data)
 application.add_url_rule('/welcome', 'welcome', welcome)
 application.add_url_rule('/login', 'login', login, methods=methods)
 
