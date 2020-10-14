@@ -1,13 +1,16 @@
 # print a nice greeting.
 from flask import Flask, render_template, redirect, url_for, request
 
-
 application = Flask(__name__)
 
 
 # use decorators to link the function to a url
 def home():
     return "Hello, World!"  # return a string
+
+
+def data():
+    return render_template('data.html')  # return a string
 
 
 def welcome():
@@ -31,7 +34,6 @@ methods = ['POST', 'GET']
 application.add_url_rule('/', 'home', home)
 application.add_url_rule('/welcome', 'welcome', welcome)
 application.add_url_rule('/login', 'login', login, methods=methods)
-
 
 # run the app.
 if __name__ == "__main__":
