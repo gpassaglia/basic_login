@@ -1,89 +1,47 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 <head>
-<title>My first chart using FusionCharts Suite XT</title>
-<!-- Include fusioncharts core library -->
-<script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
-<!-- Include fusion theme -->
-<script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
 <script type="text/javascript">
-
-FusionCharts.ready(function() {
-  var stockPriceChart = new FusionCharts({
-      id: "stockRealTimeChart",
-      type: 'realtimeline',
-      renderAt: 'chart-container',
-      width: '700',
-      height: '500',
-      dataFormat: 'json',
-      dataSource: {
-        "chart": {
-          "caption": "Sensor Data",
-          "xAxisName": "Time",
-          "yAxisName": "Value",
-          "refreshinterval": "5",
-          "yaxisminvalue": "0",
-          "yaxismaxvalue": "255",
-          "numdisplaysets": "10",
-          "labeldisplay": "rotate",
-          "showRealTimeValue": "0",
-          "theme": "fusion"
-        },
-        "categories": [{
-          "category": [{
-            "label": "Day Start"
-          }]
-        }],
-
-        "dataset": [{
-            "data": [{
-            "value": ""
-          }]
-        },
-
-    ]
-
-
-      },
-      "events": {
-        "initialized": function(e) {
-          function addLeadingZero(num) {
-            return (num <= 9) ? ("0" + num) : num;
-          }
-
-          function updateData() {
-            // Get reference to the chart using its ID
-            var chartRef = FusionCharts("stockRealTimeChart"),
-              // We need to create a querystring format incremental update, containing
-              // label in hh:mm:ss format
-              // and a value (random).
-              currDate = new Date(),
-              label = addLeadingZero(currDate.getHours()) + ":" +
-              addLeadingZero(currDate.getMinutes()) + ":" +
-              addLeadingZero(currDate.getSeconds()),
-              // Get random number between 35.25 & 35.75 - rounded to 2 decimal places
-              sensor1 = Math.floor(Math.random() *
-                256),
-              // Build Data String in format &label=...&value=...
-              strData = "&label=" + label +
-              "&value=" +
-              sensor1;
-            // Feed it to chart.
-            chartRef.feedData(strData);
-          }
-
-          var myVar = setInterval(function() {
-            updateData();
-          }, 5000);
-        }
-      }
-    })
-    .render();
-});
-
+window.onload = function() {
+	var dataPoints = [];
+	var chart;
+	$.getJSON("https://canvasjs.com/services/data/datapoints.php?xstart=1&ystart=10&length=10&type=json", function(data) {
+		$.each(data, function(key, value){
+			dataPoints.push({x: value[0], y: parseInt(value[1])});
+		});
+		chart = new CanvasJS.Chart("chartContainer",{
+			title:{
+				text:"Sensor Data"
+			},
+			data: [{
+				type: "line",
+                xValueType: "dateTime",
+				yValueFormatString: "$####.00",
+				xValueFormatString: "hh:mm:ss TT",
+				dataPoints : dataPoints,
+			}]
+		});
+		chart.render();
+		updateChart();
+	});
+	function updateChart() {
+	$.getJSON("https://canvasjs.com/services/data/datapoints.php?xstart=" + (dataPoints.length + 1) + "&ystart=" + (dataPoints[dataPoints.length - 1].y) + "&length=1&type=json", function(data) {
+		$.each(data, function(key, value) {
+			dataPoints.push({
+			x: parseInt(value[0]),
+			y: parseInt(value[1])
+			});
+		});
+		chart.render();
+		setTimeout(function(){updateChart()}, 1000);
+	});
+	}
+}
 </script>
+<script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </head>
 <body>
-<div id="chart-container">FusionCharts XT will load here!</div>
+<div id="chartContainer" style="height: 300px; width: 100%;"></div>
 </body>
 </html>
