@@ -16,6 +16,9 @@ def data():
 def welcome():
     return render_template('welcome.html')  # render a template
 
+def chart():
+    return render_template('chart.html')
+
 
 # route for handling the login page logic
 def login():
@@ -25,15 +28,16 @@ def login():
         if request.form['username'] != 'admin' or request.form['password'] != 'admin':
             error = 'Invalid Credentials. Please try again.'
         else:
-            return redirect(url_for('welcome'))
+            return redirect(url_for('chart'))
     return render_template('login.html')
 
 
-methods = ['POST', 'GET']
+methods = ['POST', 'GET', 'PUT']
 
 application.add_url_rule('/', 'home', home)
-application.add_url_rule('/data', 'data', data, methods=methods)
 application.add_url_rule('/welcome', 'welcome', welcome)
+application.add_url_rule('/chart', 'chart', chart)
+application.add_url_rule('/data', 'data', data, methods=methods)
 application.add_url_rule('/login', 'login', login, methods=methods)
 
 # run the app.
