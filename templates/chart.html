@@ -11,12 +11,12 @@ window.onload = function() {
 		});
 		chart = new CanvasJS.Chart("chartContainer",{
 			title:{
-				text:"Sensor Data"
+				text:"Sensor 1"
 			},
 			data: [{
 				type: "line",
                 xValueType: "dateTime",
-				yValueFormatString: "$####.00",
+				yValueFormatString: "####",
 				xValueFormatString: "hh:mm:ss TT",
 				dataPoints : dataPoints,
 			}]
